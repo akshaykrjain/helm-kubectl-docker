@@ -15,5 +15,5 @@ RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/s
     chmod +x get_helm.sh && \
     ./get_helm.sh
 
-# Set the default command to run when the container starts
-CMD ["/bin/bash"]
+# Command to keep the container running (example: sleep infinity)
+CMD ["sleep", "infinity"]
