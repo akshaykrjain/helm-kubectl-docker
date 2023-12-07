@@ -16,6 +16,11 @@ RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/s
     ./get_helm.sh && \
     mv /usr/local/bin/helm /usr/bin/helm
 
+# Install Kustomize
+RUN curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash && \
+    chmod +x kustomize && \
+    mv ./kustomize /usr/bin/kustomize
+
 # Set PATH environment variable to include /usr/bin
 ENV PATH="${PATH}:/usr/bin"
 
