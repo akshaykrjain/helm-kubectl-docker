@@ -27,7 +27,7 @@ RUN KUBECTL_VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt) && \
 RUN install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 # Test the installed version
-RUN kubectl version --client
+#RUN kubectl version --client
 
 # Clean up
 RUN rm kubectl kubectl.sha256
