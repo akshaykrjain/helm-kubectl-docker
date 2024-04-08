@@ -5,16 +5,20 @@ FROM ubuntu:latest
 RUN apt-get update && \
     apt-get install -y curl unzip
 
-# Set the architecture (default to amd64 if not provided)
-ARG ARCH=amd64
-
-#
-
 # Download kubectl binary
-RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${ARCH}/kubectl"
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then \
+        ARCH="amd64"; \
+    fi && \
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${ARCH}/kubectl"
 
 # Download kubectl checksum file
-RUN curl -LO "https://dl.k8s.io/${KUBECTL_VERSION}/bin/linux/${ARCH}/kubectl.sha256"
+RUN KUBECTL_VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt) && \
+    ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then \
+        ARCH="amd64"; \
+    fi && \
+    curl -LO "https://dl.k8s.io/${KUBECTL_VERSION}/bin/linux/${ARCH}/kubectl.sha256"
 
 # Validate the binary
 RUN echo "$(cat kubectl.sha256) kubectl" | sha256sum --check --status || echo "ERROR: Invalid checksum"
@@ -42,17 +46,18 @@ RUN curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/
     chmod +x kustomize && \
     mv ./kustomize /usr/bin/kustomize
 
-
-
 # Download and install awscli
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip" && \
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then \
+        ARCH="amd64"; \
+    fi && \
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-${ARCH}.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
     ./aws/install
 
 # Cleanup
-RUN rm awscliv2.zip
-RUN rm -rf ./aws
-
+RUN rm awscliv2.zip && \
+    rm -rf ./aws
 
 # Set PATH environment variable to include /usr/bin
 ENV PATH="${PATH}:/usr/bin"
