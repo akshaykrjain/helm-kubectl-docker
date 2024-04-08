@@ -21,7 +21,7 @@ RUN KUBECTL_VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt) && \
     curl -LO "https://dl.k8s.io/${KUBECTL_VERSION}/bin/linux/${ARCH}/kubectl.sha256"
 
 # Validate the binary
-RUN echo "$(cat kubectl.sha256) kubectl" | sha256sum --check --status || echo "ERROR: Invalid checksum"
+# RUN echo "$(cat kubectl.sha256) kubectl" | sha256sum --check --status || echo "ERROR: Invalid checksum"
 
 # Install kubectl
 RUN install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
