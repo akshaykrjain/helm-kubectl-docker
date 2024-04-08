@@ -30,7 +30,7 @@ RUN install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 #RUN kubectl version --client
 
 # Clean up
-RUN rm kubectl kubectl.sha256
+#RUN rm kubectl kubectl.sha256
 
 # Install Helm
 RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && \
